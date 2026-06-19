@@ -81,7 +81,7 @@ def main():
 
             case "3":
                 while True:
-                    print("1 - Registrar categoria")
+                    print("1 - Listar categoria")
                     print("2 - Registrar categoria")
                     print("0 - Voltar")
                     category_op = input("")
