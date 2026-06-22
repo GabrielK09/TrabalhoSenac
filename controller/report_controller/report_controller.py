@@ -1,65 +1,105 @@
-products_file_path = 'products.csv'
+productsfpath = 'products.csv'
+movementsfpath = 'movements.csv'
+#-----------------------------------------------------------------------
+def stockcheck():
+    with open(productsfpath, 'r') as file:
+        for line in file.readlines()[1:]:
+            divide = line.strip().split('|')
+            divideT = float(divide[6])
+            product = divide[1]
+            if divideT <= 5:
 
-MIN_STOCK = 3
-def get_max_price() -> str:
-    with open(products_file_path, 'r') as products:
+                print(f'{product} está com estoque baixo, cuidado!')
+#-----------------------------------------------------------------------
+def stockplus():
+    total_cost_value = 0.0
+    total_sale_value = 0.0
+    with open(productsfpath, 'r') as file:
+        for line in file.readlines()[1:]:
+            divide = line.strip().split('|')
+            cost_value = float(divide[4])
+            sale_value = float(divide[5])
+            total_cost_value += cost_value
+            total_sale_value += sale_value
+
+        print(f'valor avaliado total do estoque com base no preço de custo: {total_cost_value}')
+        print(f'valor avaliado total do estoque com base no preço de venda: {total_sale_value}')
+        print(f'valor avaliado total do estoque com base nos valores a cima somados: {total_cost_value + total_sale_value}')
+#-----------------------------------------------------------------------
+def mvp():
+    product = []
+    products_cost = []
+    products_sale = []
+    with open(productsfpath, 'r') as file:
+        for line in file.readlines()[1:]:
+            divide = line.strip().split('|')
+            product.append(divide[1])
+            products_cost.append(float(divide[4]))
+            products_sale.append(float(divide[5]))
+            maxps = max(products_sale)
+            maxpc = max(products_cost)
+            products_name_sale = product[products_sale.index(maxps)]
+            products_name_cost = product[products_cost.index(maxpc)]
+
+        print(f'Produto com maior value de venda: {products_name_sale} - R${max(products_sale)}')
+        print(f'Produto com maior value de custo: {products_name_cost} - R${max(products_cost)}')
+
+#-----------------------------------------------------------------------
+def report_movements_by_category() -> None:
+    product_category = {}
+    with open(productsfpath, 'r') as products:
         is_first_row = True
-        max_price = 0
-    
+
         for product in products:
             if is_first_row == True:
                 is_first_row = not is_first_row
                 continue
 
             id, name, category, unity, cust, price, amount = product.split("|")
+            product_category[id] = category
 
-            price = float(price)
+    report = {}
 
-            if price > max_price:
-                max_price = price            
-        print(f"Produto: {id}-{name} tem o maior preço do estoque: R$ {max_price}")
-
-def critical_amount() -> float:
-    with open(products_file_path, 'r') as products:
-        is_first_row = True
-    
-        for product in products:
-            if is_first_row == True:
-                is_first_row = not is_first_row
+    with open('movements.csv', 'r') as movements:
+        for movement in movements:
+            movement = movement.strip()
+            if not movement:
                 continue
 
-        id, name, category, unity, cust, price, amount = product.split("|")
+            label, supplier_info, product_info, amount, value, date = movement.split("|")
 
-        amount = float(amount)
+            product_id = product_info.split("-")[0]
+            amount = float(amount)
+            value = float(value.replace("R$", ""))
 
-        if amount <= MIN_STOCK:
-            print(f"Produto: {id}-{name} está com quantidade crítica em estoque: {amount}")
+            category = product_category.get(product_id, "sem categoria")
 
-def total_in_stock() -> float:
-    with open(products_file_path, 'r') as products:
-        is_first_row = True
-        total_amount_in_stock = 0
-        total_price_in_stock = 0
-    
-        for product in products:
-            if is_first_row == True:
-                is_first_row = not is_first_row
+            if category not in report:
+                report[category] = {
+                    "entry_value": 0, "expense_value": 0,
+                    "entry_amount": 0, "expense_amount": 0
+                }
+
+            if label == "Entrada":
+                report[category]["entry_value"] += value
+                report[category]["entry_amount"] += amount
+            else:
+                report[category]["expense_value"] += value
+                report[category]["expense_amount"] += amount
+
+    print("Relatório de Entradas e Saídas por Categoria")
+    for category, data in report.items():
+        print(f"Categoria: {category}")
+        print(f"  Entradas: R$ {data['entry_value']:.2f}  |  {data['entry_amount']:.0f} unidades")
+        print(f"  Saídas:   R$ {data['expense_value']:.2f}  |  {data['expense_amount']:.0f} unidades")
+        print()
+#-----------------------------------------------------------------------
+def report_movements():
+    with open(movementsfpath, 'r') as file:
+        for line in file.readlines():
+            line = line.strip()
+            if not line:
                 continue
+            else:
 
-        id, name, category, unity, cust, price, amount = product.split("|")
-
-        amount = float(amount)
-        cust = float(cust)
-        price = float(price)
-
-        total_amount_in_stock += amount
-        total_price_in_stock = cust * price
-        print("Valor total em estoque: R$", total_price_in_stock)
-        print("Quantidade total em estoque: ", total_amount_in_stock)
-
-def report():
-    print(15*"----")
-    get_max_price()
-    critical_amount()
-    total_in_stock()
-    print(15*"----")
+                print(line)
