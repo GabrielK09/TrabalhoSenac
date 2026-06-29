@@ -102,7 +102,37 @@ def main():
                             print("Voltando ...")
                             break
             case "4":
-                report_controller.report()
+                while True:
+                    print("1 - Checar estoque")
+                    print("2 - Checar valor total do estoque")
+                    print("3 - Produto com maiores preços")
+                    print("4 - Movimentações por categoria")
+                    print("5 - Movimentações")
+                    print("0 - Voltar")
+                    report_op = input("")
+
+                    while not validator.validate_filed("report_op", report_op): 
+                        report_op = input("Selecione uma opção: ") 
+                    
+                    match report_op:
+                        case "1":
+                            report_controller.stockcheck()
+                        case "2":
+                            report_controller.stockplus()
+                        case "3":
+                            report_controller.mvp()
+                        case "4":
+                            report_controller.report_movements_by_category()
+                        case "5":
+                            report_controller.report_movements()
+
+                        case "0":
+                            print("Voltando ...")
+                            break
+
+            case "0":
+                print("Saindo ...")
+                exit()
 
 if __name__ == "__main__":
     main()

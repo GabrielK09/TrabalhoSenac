@@ -2,7 +2,7 @@ productsfpath = 'products.csv'
 movementsfpath = 'movements.csv'
 #-----------------------------------------------------------------------
 def stockcheck():
-    with open(productsfpath, 'r') as file:
+    with open(productsfpath, 'r', encoding="cp1252") as file:
         for line in file.readlines()[1:]:
             divide = line.strip().split('|')
             divideT = float(divide[6])
@@ -14,7 +14,7 @@ def stockcheck():
 def stockplus():
     total_cost_value = 0.0
     total_sale_value = 0.0
-    with open(productsfpath, 'r') as file:
+    with open(productsfpath, 'r', encoding="cp1252") as file:
         for line in file.readlines()[1:]:
             divide = line.strip().split('|')
             cost_value = float(divide[4])
@@ -30,7 +30,7 @@ def mvp():
     product = []
     products_cost = []
     products_sale = []
-    with open(productsfpath, 'r') as file:
+    with open(productsfpath, 'r', encoding="cp1252") as file:
         for line in file.readlines()[1:]:
             divide = line.strip().split('|')
             product.append(divide[1])
@@ -41,13 +41,13 @@ def mvp():
             products_name_sale = product[products_sale.index(maxps)]
             products_name_cost = product[products_cost.index(maxpc)]
 
-        print(f'Produto com maior value de venda: {products_name_sale} - R${max(products_sale)}')
-        print(f'Produto com maior value de custo: {products_name_cost} - R${max(products_cost)}')
+        print(f'Produto com maior valor de venda: {products_name_sale} - R${max(products_sale)}')
+        print(f'Produto com maior valor de custo: {products_name_cost} - R${max(products_cost)}')
 
 #-----------------------------------------------------------------------
 def report_movements_by_category() -> None:
     product_category = {}
-    with open(productsfpath, 'r') as products:
+    with open(productsfpath, 'r', encoding="cp1252") as products:
         is_first_row = True
 
         for product in products:
@@ -60,7 +60,7 @@ def report_movements_by_category() -> None:
 
     report = {}
 
-    with open('movements.csv', 'r') as movements:
+    with open('movements.csv', 'r', encoding="cp1252") as movements:
         for movement in movements:
             movement = movement.strip()
             if not movement:
@@ -95,7 +95,7 @@ def report_movements_by_category() -> None:
         print()
 #-----------------------------------------------------------------------
 def report_movements():
-    with open(movementsfpath, 'r') as file:
+    with open(movementsfpath, 'r', encoding="cp1252") as file:
         for line in file.readlines():
             line = line.strip()
             if not line:

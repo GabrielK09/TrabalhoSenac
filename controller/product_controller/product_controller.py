@@ -8,7 +8,7 @@ import math
 file_path = 'products.csv'
 
 def generate_code() -> int:
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="cp1252") as file:
         is_first_row = True
         last_code = 0
 
@@ -27,13 +27,13 @@ def build_product(id, name, category, unity, cust, price, amount) -> str:
     return f"{id}|{name}|{category}|{unity}|{cust}|{price}|{amount}"
 
 def save_in_file(product: str) -> None:
-    with open(file_path, 'a') as file:
+    with open(file_path, 'a', encoding="cp1252") as file:
         file.write(product  + "\n")
 
     print("Produto cadastrado com sucesso!")
 
 def find_product(product_id: int) -> dict:
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="cp1252") as file:
         is_first_row = True
     
         for i, line in enumerate(file):
@@ -95,12 +95,12 @@ def handle_update():
     update_product(product, product_data["line"])
 
 def update_product(product: str, line: int):
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="cp1252") as file:
         lines =  file.readlines()
 
     lines[line] = product + "\n"
 
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding="cp1252") as file:
         file.writelines(lines)
 
     print("Produto alterado com sucesso!")
@@ -142,6 +142,7 @@ def register_movement(movement_type: str):
     while not validator.validate_filed("amount", amount):
         amount = float(input("Digite a qtde saída do produto: "))
 
+    price = 0
     if movement_type != 'entry':
         price = float(input(f"Digite o valor da {'entrada' if movement_type == 'entry' else 'saída'} do produto: "))
         while not validator.validate_filed("price", price):
@@ -177,19 +178,21 @@ def register_movement(movement_type: str):
     date_movement = datetime.now()
 
     label = "Entrada" if movement_type == 'entry' else "Saída"
+
     register = f"{label}|{descrontructed_supplier_name["id"]}-{descrontructed_supplier_name["name"]}|{descrontructed_product_name["id"]}-{descrontructed_product_name["name"]}|{amount}" + f"|R${math.ceil(float(amount) * price)}"+ f"|{date_movement}"
 
-    with open('movements.csv', 'a') as movements: 
+    with open('movements.csv', 'a', encoding="cp1252") as movements: 
         movements.write(register)
     
     print("Movimentação cadastrada com sucesso!")
 
 def get_all():
     print("Lista de produtos")
-    with open(file_path, 'r') as products:
+    with open(file_path, 'r', encoding="utf-8") as products:
         is_first_row = True
         for product in products:
             if is_first_row == True:
+                print(product)
                 is_first_row = not is_first_row
                 continue
             

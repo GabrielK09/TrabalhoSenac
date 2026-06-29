@@ -1,3 +1,5 @@
+import re
+
 options = (
     "1",
     "2",
@@ -58,7 +60,9 @@ def validate_filed(field, value) -> bool:
         case "cnpj":
             if value == "":
                 return False
-            elif len(value) > 14:
+
+            
+            elif len(re.sub(r'[^\w\s]', '', value)) > 14:
                 return False   
             
             return True
@@ -100,6 +104,15 @@ def validate_filed(field, value) -> bool:
             return True
         
         case "category_op":
+            if value == 0:
+                return False
+            
+            elif value not in options:
+                return False
+            
+            return True
+        
+        case "report_op":
             if value == 0:
                 return False
             

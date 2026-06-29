@@ -3,7 +3,7 @@ from helpers import helpers
 file_path = 'categories.csv'
 
 def generate_code() -> int:
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="cp1252") as file:
         is_first_row = True
         last_code = 0
 
@@ -19,7 +19,7 @@ def generate_code() -> int:
         return int(last_code) + 1
     
 def save_in_file(product: str) -> None:
-    with open(file_path, 'a') as file:
+    with open(file_path, 'a', encoding="cp1252") as file:
         file.write(product  + "\n")
 
     print("Categoria cadastrada com sucesso!")
@@ -29,19 +29,21 @@ def build_category(id, name) -> str:
 
 def get_all():
     print("Lista de categorias")
-    with open(file_path, 'r') as categories:
+    with open(file_path, "r", encoding="cp1252") as categories:
         is_first_row = True
         for category in categories:
             if is_first_row == True:
+                print(category)
                 is_first_row = not is_first_row
                 continue
             
-            id, name = category.split("|")
+            category = category.strip().split("|")
+            id, name = category
             
             print(build_category(id, name))
     
 def find_category(category_id: int) -> dict:
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="cp1252") as file:
         is_first_row = True
     
         for i, line in enumerate(file):

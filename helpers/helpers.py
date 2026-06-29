@@ -8,14 +8,17 @@ def collect_product_data() -> dict:
     while not validator.validate_filed("name", name):
         name = input("Digite o nome do produto: ")
 
-    category_id = int(input("Digite o ID da categoria do produto: "))
-    while not validator.validate_filed("category_id", category_id):
-        category_id = int(input("Digite o ID da categoria do produto: "))
+    category_id = int(input("Digite o ID da categoria do produto (digite 0 para não informar): "))
 
-    category_data = category_controller.find_category(category_id)
-    if not validator.validate_filed("category_line", category_data["line"]):
-        print("A categoria não existe, confirme se a categoria existe")
-        return
+    category_data = None
+    if category_id != 0:
+        while not validator.validate_filed("category_id", category_id):
+            category_id = int(input("Digite o ID da categoria do produto: "))
+
+        category_data = category_controller.find_category(category_id)
+        if not validator.validate_filed("category_line", category_data["line"]):
+            print("A categoria não existe, confirme se a categoria existe")
+            return
 
     unity = input("Digite a unidade do produto: ")
     while not validator.validate_filed("unity", unity):
@@ -43,13 +46,23 @@ def collect_product_data() -> dict:
         amount = float(input("Digite a qtde do produto: "))
 
     product_data["name"] = name
-    product_data["category"] = category_data["category"].split("|")[1].strip()
+    product_data["category"] = category_data["category"].split("|")[1].strip() if category_data != None else "Sem categoria"
     product_data["unity"] = unity
     product_data["cust"] = cust
     product_data["price"] = price
     product_data["amount"] = amount
 
     return product_data
+
+def collect_category_data() -> dict:
+    category_data = {}
+
+    name = input("Digite o nome da categoria: ")
+    while not validator.validate_filed("name", name):
+        name = input("Digite o nome da categoria: ")
+
+    category_data["name"] = name
+    return category_data
 
 def descrontruct_name(data: dict) -> dict:
     new_data = {}
@@ -73,13 +86,3 @@ def descrontruct_name(data: dict) -> dict:
         new_data["uf"] = uf
     
     return new_data
-
-def collect_category_data() -> dict:
-    category_data = {}
-
-    name = input("Digite o nome da categoria: ")
-    while not validator.validate_filed("name", name):
-        name = input("Digite o nome da categoria: ")
-
-    category_data["name"] = name
-    return category_data
