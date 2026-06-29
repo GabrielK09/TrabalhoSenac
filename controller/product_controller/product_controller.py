@@ -137,15 +137,17 @@ def register_movement(movement_type: str):
         print("Produto não localizado")
         return
 
-    amount = float(input(f"Digite a qtde {'saída' if movement_type == 'entry' else 'entrada'} do produto: "))
+    amount = float(input(f"Digite a qtde {'entrada' if movement_type == 'entry' else 'saída'} do produto: "))
+
     while not validator.validate_filed("amount", amount):
         amount = float(input("Digite a qtde saída do produto: "))
 
     if movement_type != 'entry':
-        price = float(input(f"Digite a o valor da {'saída' if movement_type == 'entry' else 'entrada'} do produto: "))
-        while not validator.validate_filed("amount", amount):
-            price = float(input("Digite a qtde saída do produto: "))
+        price = float(input(f"Digite o valor da {'entrada' if movement_type == 'entry' else 'saída'} do produto: "))
+        while not validator.validate_filed("price", price):
+            price = float(input(f"Digite o valor da {'entrada' if movement_type == 'entry' else 'saída'} do produto: "))
 
+    # id|name|category|unity|cust|price|amount
     descrontructed_product_name = helpers.descrontruct_name(product_data)
     
     new_amount = 0
