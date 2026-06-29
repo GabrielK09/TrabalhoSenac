@@ -90,7 +90,7 @@ def report_movements_by_category() -> None:
     print("Relatório de Entradas e Saídas por Categoria")
     for category, data in report.items():
         print(f"Categoria: {category}")
-        print(f"  Entradas: R$ {data['entry_value']:.2f}  |  {data['entry_amount']:.0f} unidades")
+        print(f"  Entradas: {data['entry_amount']:.0f} unidades")
         print(f"  Saídas:   R$ {data['expense_value']:.2f}  |  {data['expense_amount']:.0f} unidades")
         print()
 #-----------------------------------------------------------------------

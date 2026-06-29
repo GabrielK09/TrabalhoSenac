@@ -33,6 +33,8 @@ def collect_product_data() -> dict:
         price = float(input("Digite o preço de venda do produto: "))
     
     while cust > price:
+        print("O preço custo não pode ser maior que o preço de venda")
+
         cust = float(input("Digite o preço de custo do produto: "))
         while not validator.validate_filed("cust", cust):
             cust = float(input("Digite o preço de custo do produto: "))
@@ -47,7 +49,7 @@ def collect_product_data() -> dict:
 
     product_data["name"] = name
     product_data["category"] = category_data["category"].split("|")[1].strip() if category_data != None else "Sem categoria"
-    product_data["unity"] = unity
+    product_data["unity"] = unity.upper()
     product_data["cust"] = cust
     product_data["price"] = price
     product_data["amount"] = amount
@@ -77,7 +79,7 @@ def descrontruct_name(data: dict) -> dict:
         new_data["price"] = price
         new_data["amount"] = amount
     elif "supplier" in data:
-        id, name, cnpj, street, city, uf, active = data["supplier"].split("|")
+        id, name, cnpj, street, city, uf = data["supplier"].split("|")
         new_data["id"] = id
         new_data["name"] = name
         new_data["cnpj"] = cnpj

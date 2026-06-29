@@ -182,7 +182,7 @@ def register_movement(movement_type: str):
     register = f"{label}|{descrontructed_supplier_name["id"]}-{descrontructed_supplier_name["name"]}|{descrontructed_product_name["id"]}-{descrontructed_product_name["name"]}|{amount}" + f"|R${math.ceil(float(amount) * price)}"+ f"|{date_movement}"
 
     with open('movements.csv', 'a', encoding="cp1252") as movements: 
-        movements.write(register)
+        movements.write(register + "\n")
     
     print("Movimentação cadastrada com sucesso!")
 
